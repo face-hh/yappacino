@@ -22,7 +22,7 @@ const REGEX = {
     "match": /(compeer)\s+\w+\s+\{\s*(?:[^{}]*\{[^{}]*\}[^{}]*)*\}/g,
     "word_and_symbols": /([^\w]+)/,
     "types": /\s?:.*?\)/,
-    "towards": /(for\(.+?\)\s*\{[\s\S]*\})/,
+    "towards": /(for\(\w{1}\s*in.+?\)\s*\{[\s\S]*\})/,
     "for": /for\((\w+)\s+within (.*)\.\.(.*)\){/g,
     "switch": /switch\s*([^{]*)/,
     "match_cases": /(\d+)\s*(?:\|\s*)?/g,
@@ -89,7 +89,6 @@ async function read(filePath) {
 }
 
 async function emptyDist(PATH) {
-    console.log(PATH + "/dist")
     await rm(PATH + "/dist", { recursive: true, force: true });
 }
 
@@ -137,6 +136,8 @@ const TYPES = ["Integer", "Ligature"]
 
 const KEYWORDS = {
     "constant": (line) => {
+        if(!/(?:^|\s)constant(?:$|\s)/.test(line)) return line;
+        
         assert(line, "variable");
         let is_synchronised = line.includes("synchronised");
 
@@ -156,6 +157,8 @@ const KEYWORDS = {
         return line;
     },
     "mutable": (line) => {
+        if(!/(?:^|\s)mutable(?:$|\s)/.test(line)) return line;
+        
         assert(line, "variable");
 
         let is_volatile = line.includes("volatile");
@@ -191,8 +194,6 @@ const KEYWORDS = {
         line = replaceOrThrow(line, ": " + type, "")
 
         // TODO: ADD TYPES FOR _TYPE_VARIABLES HERE
-
-
 
         return line;
     },
@@ -249,6 +250,7 @@ const KEYWORDS = {
         return line;
     },
     "classification": (line) => {
+        if(!/(?:^|\s)classification(?:$|\s)/.test(line)) return line;
         let is_transient = line.includes("transient");
 
         line = line
@@ -263,6 +265,7 @@ const KEYWORDS = {
         return line
     },
     "epitomise": (line) => {
+        if(!/(?:^|\s)epitomise(?:$|\s)/.test(line)) return line;
         line = line
             .replace(/epitomise/, "new")
 
@@ -270,6 +273,7 @@ const KEYWORDS = {
         return line
     },
     "extemporize": (line) => {
+        if(!/(?:^|\s)extemporize(?:$|\s)/.test(line)) return line;
         line = line
             .replace(/extemporize/, "constructor")
 
@@ -280,55 +284,69 @@ const KEYWORDS = {
         return line
     },
     "aforementioned": (line) => {
+        if(!/(?:^|\s)aforementioned(?:$|\s)/.test(line)) return line;
         line = line
             .replace(/aforementioned/, "this")
 
         return line
     },
     "stipulate": (line) => {
+        if(!/(?:^|\s)stipulate(?:$|\s)/.test(line)) return line;
         line = line.replace(/stipulate/, "if")
 
         return line
     },
     "otherwise": (line) => {
+        if(!/(?:^|\s)otherwise(?:$|\s)/.test(line)) return line;
         line = line.replace(/otherwise/, "else")
 
         return line
     },
     "true": (line) => {
-        return line.replace(/true/g, "__BOOLEANS__.TRUE")
+        if(!/(?:^|\s)true(?:$|\s)/.test(line)) return line;
+        return line.replace(/true/, "__BOOLEANS__.TRUE")
     },
     "false": (line) => {
-        return line.replace(/false/g, "__BOOLEANS__.FALSE")
+        if(!/(?:^|\s)false(?:$|\s)/.test(line)) return line;
+        return line.replace(/false/, "__BOOLEANS__.FALSE")
     },
     "neither": (line) => {
-        return line.replace(/neither/g, "__BOOLEANS__.NEITHER")
+        if(!/(?:^|\s)neither(?:$|\s)/.test(line)) return line;
+        return line.replace(/neither/, "__BOOLEANS__.NEITHER")
     },
     "both": (line) => {
-        return line.replace(/both/g, "__BOOLEANS__.BOTH")
+        if(!/(?:^|\s)both(?:$|\s)/.test(line)) return line;
+        return line.replace(/both/, "__BOOLEANS__.BOTH")
     },
     "maybe": (line) => {
-        return line.replace(/maybe/g, "__BOOLEANS__.MAYBE")
+        if(!/(?:^|\s)maybe(?:$|\s)/.test(line)) return line;
+        return line.replace(/maybe/, "__BOOLEANS__.MAYBE")
     },
     "trueish": (line) => {
-        return line.replace(/trueish/g, "__BOOLEANS__.TRUEISH")
+        if(!/(?:^|\s)trueish(?:$|\s)/.test(line)) return line;
+        return line.replace(/trueish/, "__BOOLEANS__.TRUEISH")
     },
     "falseish": (line) => {
-        return line.replace(/falseish/g, "__BOOLEANS__.FALSEISH")
+        if(!/(?:^|\s)falseish(?:$|\s)/.test(line)) return line;
+        return line.replace(/falseish/, "__BOOLEANS__.FALSEISH")
     },
     "depends": (line) => {
-        return line.replace(/depends/g, "__BOOLEANS__.DEPENDS")
+        if(!/(?:^|\s)depends(?:$|\s)/.test(line)) return line;
+        return line.replace(/depends/, "__BOOLEANS__.DEPENDS")
     },
     "complicated": (line) => {
-        return line.replace(/complicated/g, "__BOOLEANS__.COMPLICATED")
+        if(!/(?:^|\s)complicated(?:$|\s)/.test(line)) return line;
+        return line.replace(/complicated/, "__BOOLEANS__.COMPLICATED")
     },
     "connotate": (line) => {
+        if(!/(?:^|\s)connotate(?:$|\s)/.test(line)) return line;
         line = line.replace(/connotate/, "import")
         line = line.replace(/derives/, "from")
 
         return line
     },
     "towards": (line) => {
+        if(!/(?:^|\s)true(?:$|\s)/.test(line)) return line;
         line = line.replace(/towards/, "for")
 
         return line
@@ -342,7 +360,7 @@ const KEYWORDS = {
 };
 
 async function main() {
-    const { values, positionals } = parseArgs({
+    const { values } = parseArgs({
         args: Bun.argv,
         options: {
           shut_the_fuck_up: {
