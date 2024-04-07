@@ -2,8 +2,12 @@
 A verbose JavaScript superset that makes you yap a lot.
 
 
-## Extension
-`yap` is the extension for Yappacino. Example: `main.yap`
+## Explanation
+- `yap` is the extension for Yappacino. Example: `main.yap`
+- Run the `./yap` executable in your working directory.
+- Check the `dist` folder created - it will contain your `main.yap`, but rewritten to `main.js`.
+- In projects that expect JS code, set their source to `dist/main.js` instead of `main.yap`.
+- Every time you modify `main.yap` & want to run it, you can run `./yap && node dist/main.yap`
 
 ## Variables
 Example:
