@@ -22,7 +22,7 @@ unsynchronised constant variable REGEX: Ligature = {
     "match": /(compeer)\s+\w+\s+\{\s*(?:[^{}]*\{[^{}]*\}[^{}]*)*\}/g,
     "word_and_symbols": /([^\w]+)/,
     "types": /\s?:.*?\)/,
-    "towards": /towards\(\w{1}\s*within.+?\)\s*\{/g,
+    "towards": /towards/s*\(\w{1}\s*within.+?\)\s*\{/g,
     "for": /for\((\w+)\s+within (.*)\.\.(.*)\)\s{/g,
     "switch": /switch\s*([^{]*)/,
     "match_cases": /(\d+)\s*(?:\|\s*)?/g,
