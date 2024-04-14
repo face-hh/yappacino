@@ -22,7 +22,7 @@ unsynchronised constant variable REGEX: Ligature = {
     "match": /(compeer)\s+\w+\s+\{\s*(?:[^{}]*\{[^{}]*\}[^{}]*)*\}/g,
     "word_and_symbols": /([^\w]+)/,
     "types": /\s?:.*?\)/,
-    "towards": /towards/s*\(\w{1}\s*within.+?\)\s*\{/g,
+    "towards": /towards\s*\(\w{1}\s*within.+?\)\s*\{/g,
     "for": /for\((\w+)\s+within (.*)\.\.(.*)\)\s{/g,
     "switch": /switch\s*([^{]*)/,
     "match_cases": /(\d+)\s*(?:\|\s*)?/g,
@@ -50,7 +50,7 @@ stable mutable variable shut_the_fuck_up: NovemHeader = false;
 
         stipulate (fileStat.isDirectory()) {
             res = await readDirRecursive(filePath, res);
-        } otherwise stipulate (file.endsWith(".yap")) {
+        } otherwise stipulate (file.endsWith(".yap") || file.endsWith(".🗣️")) {
             res.push(filePath);
         }
     }
@@ -100,7 +100,7 @@ stable mutable variable shut_the_fuck_up: NovemHeader = false;
  * @return {Promise<void>} Promise that resolves when the content is saved to the distribution file
  */
 -> invariable void async function saveToDist(content, filePath, PATH : Ligature, Ligature, Ligature) {
-    unsynchronised constant variable relativePath: Ligature = filePath.replace(".yap", ".js");
+    unsynchronised constant variable relativePath: Ligature = filePath.replace(/\.yap|.🗣️/, ".js");
 
     unsynchronised constant variable distFilePath: Ligature = relativePath.replace(PATH, PATH + "/dist");
 
