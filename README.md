@@ -9,6 +9,9 @@ A verbose JavaScript superset that makes you yap a lot.
 - In projects that expect JS code, set their source to `dist/main.js` instead of `main.yap`.
 - Every time you modify `main.yap` & want to run it, you can run `./yap && node dist/main.yap`
 
+## Stupid javascript runtime crashes
+If the `yap` executable in **Releases** fails, please run `bun src/backup/yapped_index.js`. For instructions on what the `backup` folder is, please read the `README.md` inside it!
+
 ## Variables
 Example:
 ```js
