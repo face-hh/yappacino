@@ -20,8 +20,6 @@ const UTILS = String.raw`
 const C = {Standard:{System:{io:{format:{print:{ln: console.log}}}}}}
 
 const __BOOLEANS__ = {
-    "TRUE": "true",
-    "FALSE": "false",
     "NEITHER": 0.0001,
     "BOTH": 0.0002,
     "MAYBE": 0.0003,
@@ -50,7 +48,7 @@ const _TYPES_VARIABLES = new Map();
 const _TYPES_FUNCTIONS = new Map();
 const _TYPES_CLASSES = new Map();
 
-let shut_the_fuck_up = __BOOLEANS__.FALSE;
+let shut_the_fuck_up = false;
 
 async function readDirRecursive(dir, res = []) {
     let files = await readdir(dir);
@@ -73,7 +71,7 @@ async function readDirRecursive(dir, res = []) {
 }
 
 function assert(str, search, or) {
-    if (!str.includes(search) || or ? str.includes(or) : __BOOLEANS__.FALSE) {
+    if (!str.includes(search) || or ? str.includes(or) : false) {
         throw new Error(`Expected to find ${search} in ${str}`)
     }
 }
@@ -102,7 +100,7 @@ async function read(filePath) {
 }
 
 async function emptyDist(PATH) {
-    await rm(PATH + "/dist", { recursive: __BOOLEANS__.TRUE, force: __BOOLEANS__.TRUE });
+    await rm(PATH + "/dist", { recursive: true, force: true });
 }
 
 /**
@@ -118,7 +116,7 @@ async function saveToDist(content, filePath, PATH) {
 
     const distFilePath = relativePath.replace(PATH, PATH + "/dist");
 
-    await mkdir(distFilePath.split("/").slice(0, -1).join("/"), { recursive: __BOOLEANS__.TRUE });
+    await mkdir(distFilePath.split("/").slice(0, -1).join("/"), { recursive: true });
 
     content = UTILS + content;
 
@@ -162,7 +160,7 @@ const KEYWORDS = {
         let _variable = REGEX.variables.exec(line);
 // add error handling here pls lol, means no type on var
         _TYPES_VARIABLES.set(_variable[1], {
-            "constant": __BOOLEANS__.TRUE,
+            "constant": true,
             is_synchronised,
             type: _variable[2]
         });
@@ -185,7 +183,7 @@ const KEYWORDS = {
         let _variable = REGEX.variables.exec(line);
 // error check here pls too
         _TYPES_VARIABLES.set(_variable[1], {
-            "constant": __BOOLEANS__.FALSE,
+            "constant": false,
             is_volatile,
             type: _variable[2]
         });
@@ -315,14 +313,6 @@ const KEYWORDS = {
 
         return line
     },
-    "true": (line) => {
-        if(!/(?:^|\s)true\s*/.test(line)) return line;
-        return line.replace(/true/, "__BOOLEANS__.TRUE")
-    },
-    "false": (line) => {
-        if(!/(?:^|\s)false\s*/.test(line)) return line;
-        return line.replace(/false/, "__BOOLEANS__.FALSE")
-    },
     "neither": (line) => {
         if(!/(?:^|\s)neither\s*/.test(line)) return line;
         return line.replace(/neither/, "__BOOLEANS__.NEITHER")
@@ -384,8 +374,8 @@ async function main() {
             type: 'boolean',
           },
         },
-        strict: __BOOLEANS__.FALSE,
-        allowPositionals: __BOOLEANS__.TRUE,
+        strict: false,
+        allowPositionals: true,
     });
 
     shut_the_fuck_up = values.shut_the_fuck_up

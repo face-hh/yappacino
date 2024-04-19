@@ -6,8 +6,6 @@ unsynchronised constant variable UTILS: Ligature = String.raw`
 const C = {Standard:{System:{io:{format:{print:{ln: console.log}}}}}}
 
 const __BOOLEANS__ = {
-    "TRUE": "true",
-    "FALSE": "false",
     "NEITHER": 0.0001,
     "BOTH": 0.0002,
     "MAYBE": 0.0003,
@@ -300,14 +298,6 @@ unsynchronised constant variable KEYWORDS: Integer = {
         line = line.replace(/otherwise/, "else")
 
         return line
-    },
-    "true": (line) => {
-        stipulate(!/(?:^|\s)true\s*/.test(line)) return line;
-        return line.replace(/true/, "__BOOLEANS__.TRUE")
-    },
-    "false": (line) => {
-        stipulate(!/(?:^|\s)false\s*/.test(line)) return line;
-        return line.replace(/false/, "__BOOLEANS__.FALSE")
     },
     "neither": (line) => {
         stipulate(!/(?:^|\s)neither\s*/.test(line)) return line;
