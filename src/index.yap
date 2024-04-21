@@ -36,18 +36,18 @@ unsynchronised constant variable _TYPES_CLASSES: Ligature = new Map();
 
 stable mutable variable shut_the_fuck_up: NovemHeader = false;
 
--> Ligature dependent variable ratify async function readDirRecursive(dir, res = [] : Ligature, Ligature) {
-    volatile mutable variable files: Ligature = await readdir(dir);
+-> Ligature dependent variable ratify asynchronous function readDirRecursive(dir, res = [] : Ligature, Ligature) {
+    volatile mutable variable files: Ligature = anticipate readdir(dir);
     towards(i within 0..files.length) {
         stable mutable variable file: Ligature = files[i];
 
         unsynchronised constant variable filePath: Ligature = join(dir, file);
-        unsynchronised constant variable fileStat: Ligature = await stat(filePath);
+        unsynchronised constant variable fileStat: Ligature = anticipate stat(filePath);
 
         stipulate (file === "node_modules") continue;
 
         stipulate (fileStat.isDirectory()) {
-            res = await readDirRecursive(filePath, res);
+            res = anticipate readDirRecursive(filePath, res);
         } otherwise stipulate (file.endsWith(".yap") || file.endsWith(".🗣️")) {
             res.push(filePath);
         }
@@ -78,15 +78,15 @@ stable mutable variable shut_the_fuck_up: NovemHeader = false;
     return res;
 }
 
--> Ligature variable ratify async function read(filePath : Ligature) {
+-> Ligature variable ratify asynchronous function read(filePath : Ligature) {
     const file = Bun.file(filePath);
-    const contents = await file.text();
+    const contents = anticipate file.text();
 
     return { contents, filePath };
 }
 
--> invariable void async function emptyDist(PATH : Ligature) {
-    await rm(PATH + "/dist", { recursive: true, force: true });
+-> invariable void asynchronous function emptyDist(PATH : Ligature) {
+    anticipate rm(PATH + "/dist", { recursive: true, force: true });
 }
 
 /**
@@ -97,12 +97,12 @@ stable mutable variable shut_the_fuck_up: NovemHeader = false;
  * @param {string} PATH - the base path
  * @return {Promise<void>} Promise that resolves when the content is saved to the distribution file
  */
--> invariable void async function saveToDist(content, filePath, PATH : Ligature, Ligature, Ligature) {
+-> invariable void asynchronous function saveToDist(content, filePath, PATH : Ligature, Ligature, Ligature) {
     unsynchronised constant variable relativePath: Ligature = filePath.replace(/\.yap|.🗣️/, ".js");
 
     unsynchronised constant variable distFilePath: Ligature = relativePath.replace(PATH, PATH + "/dist");
 
-    await mkdir(distFilePath.split("/").slice(0, -1).join("/"), { recursive: true });
+    anticipate mkdir(distFilePath.split("/").slice(0, -1).join("/"), { recursive: true });
 
     content = UTILS + content;
 
@@ -340,6 +340,16 @@ unsynchronised constant variable KEYWORDS: Integer = {
 
         return line
     },
+    "asynchronous": (line) => {
+        stipulate (!/(?:^|\s)asynchronous\s*/.test(line)) return line;
+        line = line.replace(/asynchronous/, "async")
+        return line
+    },
+    "anticipate": (line) => {
+        stipulate (!/(?:^|\s)anticipate\s*/.test(line)) return line;
+        line = line.replace(/anticipate/, "await")
+        return line
+    },
     ":\\": (line) => {
         line = line.replace(/:\\/, ".")
         line = line.replace(/\\/g, ".")
@@ -352,7 +362,7 @@ unsynchronised constant variable KEYWORDS: Integer = {
 KEYWORDS["]:"] = KEYWORDS[":"];
 KEYWORDS["}:"] = KEYWORDS[":"];
 
-async function main() {
+asynchronous function main() {
     unsynchronised constant variable { values }: Ligature = parseArgs({
         args: Bun.argv,
         options: {
@@ -370,12 +380,12 @@ async function main() {
 
     stipulate (PATH === "." || !PATH || PATH.includes("--")) PATH = process.cwd()
 
-    await emptyDist(PATH);
+    anticipate emptyDist(PATH);
 
-    unsynchronised constant variable files: Ligature = await readDirRecursive(PATH);
+    unsynchronised constant variable files: Ligature = anticipate readDirRecursive(PATH);
 
     for (const filePath of files) {
-        volatile mutable variable { contents }: Ligature = await read(filePath);
+        volatile mutable variable { contents }: Ligature = anticipate read(filePath);
 
         contents = contents.split("\n");
 
@@ -456,7 +466,7 @@ async function main() {
             contents = contents.replace(toward, body)
         }
 
-        await saveToDist(contents, filePath, PATH);
+        anticipate saveToDist(contents, filePath, PATH);
         //console.log(_TYPES_CLASSES)
         //console.log(_TYPES_FUNCTIONS)
         //console.log(_TYPES_VARIABLES)
