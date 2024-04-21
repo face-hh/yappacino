@@ -354,6 +354,16 @@ const KEYWORDS = {
 
         return line
     },
+    "asynchronous": (line) => {
+        if (!/(?:^|\s)asynchronous\s*/.test(line)) return line;
+        line = line.replace(/asynchronous/, "async")
+        return line
+    },
+    "anticipate": (line) => {
+        if (!/(?:^|\s)anticipate\s*/.test(line)) return line;
+        line = line.replace(/anticipate/, "await")
+        return line
+    },
     ":\\": (line) => {
         line = line.replace(/:\\/, ".")
         line = line.replace(/\\/g, ".")
